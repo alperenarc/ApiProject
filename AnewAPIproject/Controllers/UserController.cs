@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AnewAPIproject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AnewAPIproject.Controllers
 {
@@ -155,6 +156,19 @@ namespace AnewAPIproject.Controllers
             }
 
             return user;
+        }
+
+
+        public async Task<bool> IsAccept(string ApiKey)
+        {
+
+            var check = await _context.Users.Select(x => x.ApiKey).FirstOrDefaultAsync();
+            if (String.IsNullOrEmpty(check))
+            {
+                return true;
+            }
+            return false;
+
         }
     }
 }
