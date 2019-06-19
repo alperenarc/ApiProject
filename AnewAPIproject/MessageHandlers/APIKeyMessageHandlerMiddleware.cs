@@ -1,4 +1,6 @@
-﻿using AnewAPIproject.Models;
+﻿using AnewAPIproject.Controllers;
+using AnewAPIproject.Helper;
+using AnewAPIproject.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +13,20 @@ namespace AnewAPIproject.MessageHandlers
 {
     public class APIKeyMessageHandlerMiddleware
     {
-        private const string APIKeyToCheck = "5567GGH7225ASW890"; 
-
+        private const string APIKeyToCheck = "5567GGH7225ASW890";
         private RequestDelegate next;
-        
+
         public APIKeyMessageHandlerMiddleware(RequestDelegate next)
         {
             this.next = next;
         }
+        
         public async Task Invoke(HttpContext context)
         {
+            
+
             bool validKey = false;
+            
             var checkApiKeyExists = context.Request.Query["APIKey"];
             if (!String.IsNullOrEmpty(checkApiKeyExists))
             {

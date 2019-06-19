@@ -13,5 +13,10 @@ namespace AnewAPIproject.Models
         {
         }
         public DbSet<User> Users { get; set; }
+
+        internal object SingleOrDefault(Func<object, object> p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
