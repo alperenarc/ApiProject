@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AnewAPIproject.Models;
 using Microsoft.AspNetCore.Authorization;
+using AnewAPIproject.DTOs;
+using AnewAPIproject.Helper;
 
 namespace AnewAPIproject.Controllers
 {
@@ -76,18 +78,19 @@ namespace AnewAPIproject.Controllers
         }
 
         // POST: api/User
-        
-        public async Task<ActionResult<User>> PostUser()
+        [HttpPost]
+        public async Task<ActionResult<User>> PostUser(User user)
         {
 
             User adduser = new User();
-            adduser.Name = "Ercüment";
-            adduser.Email = "Ercu@gmail.com";
+            adduser.Name = user.Name;
+            adduser.Email = user.Email;
+            
 
-            var pass = Helper.PasswordHelper.HashPassword("alperen123");
+            var pass = Helper.PasswordHelper.HashPassword(user.Password);
             adduser.Password = pass;
 
-
+            
             _context.Users.Add(adduser);
             await _context.SaveChangesAsync();
 
@@ -168,6 +171,25 @@ namespace AnewAPIproject.Controllers
                 return true;
             }
             return false;
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<LoginUser>> Login(LoginUser user)
+        {
+            var Check = await _context.Users.Where(x => x.Email == user.Email).FirstOrDefaultAsync();
+
+            var PasswordCheck = PasswordHelper.ValidatePassword(user.Password, Check.Password);
+
+
+            if (PasswordCheck == true)
+            {
+                return Ok(Check);
+            }
+            else
+            {
+                return NotFound("Invalid User");
+            }
 
         }
     }
