@@ -36,9 +36,9 @@ namespace AnewAPIproject
             services.AddCors();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var connection = @"Server=mssql08.turhost.com; Initial Catalog=Api; User ID=Alperen; Password=alparc817ismail.";
-            //var connection = @"Server=(localdb)\mssqllocaldb;Database=ANEWAPI;Trusted_Connection=True;ConnectRetryCount=0";
-            services.AddDbContext<UserContext>(options => options.UseSqlServer(connection));
+            //var connection = @"Server=mssql08.turhost.com; Initial Catalog=Api; User ID=Alperen; Password=alparc817ismail.";
+            //var connection = @"Server=(localdb)\mssqllocaldb;Database=Azure2;Trusted_Connection=True;ConnectRetryCount=0";
+            services.AddDbContext<UserContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
 
